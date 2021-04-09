@@ -21,7 +21,7 @@ public class Proposta {
     private BigDecimal salario;
     @NotNull
     private String documento;
-    @OneToOne(mappedBy = "proposta", cascade = CascadeType.PERSIST)
+    @OneToOne(cascade = CascadeType.PERSIST)
     private Endereco endereco;
 
     public Long getId() {

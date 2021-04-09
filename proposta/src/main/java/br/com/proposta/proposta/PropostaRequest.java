@@ -1,6 +1,10 @@
 package br.com.proposta.proposta;
 
 import br.com.proposta.endereco.EnderecoRequest;
+import br.com.proposta.proposta.documento.CnpjGroup;
+import br.com.proposta.proposta.documento.CpfGroup;
+import org.hibernate.validator.constraints.br.CNPJ;
+import org.hibernate.validator.constraints.br.CPF;
 
 import javax.persistence.OneToOne;
 import javax.validation.constraints.*;
@@ -18,6 +22,8 @@ public class PropostaRequest {
     @NotEmpty
     @Positive
     private BigDecimal salario;
+    @CPF(groups = CpfGroup.class)
+    @CNPJ(groups = CnpjGroup.class)
     private String documento;
     @OneToOne
     private EnderecoRequest endereco;
