@@ -24,6 +24,17 @@ public class Proposta {
     @OneToOne(cascade = CascadeType.PERSIST)
     private Endereco endereco;
 
+    public Proposta() {
+    }
+
+    public Proposta(@NotNull String nome, @NotNull String email, @NotNull @Min(0) BigDecimal salario, @NotNull String documento, Endereco endereco) {
+        this.nome = nome;
+        this.email = email;
+        this.salario = salario;
+        this.documento = documento;
+        this.endereco = endereco;
+    }
+
     public Long getId() {
         return id;
     }
@@ -42,5 +53,9 @@ public class Proposta {
 
     public Endereco getEndereco() {
         return endereco;
+    }
+
+    public String getDocumento() {
+        return documento;
     }
 }

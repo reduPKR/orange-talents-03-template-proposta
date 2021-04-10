@@ -4,18 +4,18 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-public class EnderecoRequest {
-    @NotNull
-    @NotEmpty
+public class EnderecoResponse {
     private String cidade;
-    @NotNull
-    @NotEmpty
     private String estado;
-    @NotNull
-    @NotEmpty
     private String rua;
-    @Min(1)
     private int numero;
+
+    public EnderecoResponse(Endereco endereco) {
+        this.cidade = endereco.getCidade();
+        this.estado = endereco.getEstado();
+        this.rua = endereco.getRua();
+        this.numero = endereco.getNumero();
+    }
 
     public String getCidade() {
         return cidade;
@@ -31,14 +31,5 @@ public class EnderecoRequest {
 
     public int getNumero() {
         return numero;
-    }
-
-    public Endereco toModel() {
-        return new Endereco(
-                this.cidade,
-                this.estado,
-                this.rua,
-                this.numero
-        );
     }
 }

@@ -1,8 +1,8 @@
 package br.com.proposta.proposta.documento;
 
 public enum TipoPessoa {
-    CPF(CpfGroup.class),
-    CNPJ(CnpjGroup.class);
+    FISICA(CpfGroup.class),
+    JURIDICA(CnpjGroup.class);
 
     private final Class<?> group;
 

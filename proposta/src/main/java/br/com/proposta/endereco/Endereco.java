@@ -19,6 +19,16 @@ public class Endereco {
     private String rua;
     private int numero;
 
+    public Endereco() {
+    }
+
+    public Endereco(@NotNull String cidade, @NotNull String estado, @NotNull String rua, int numero) {
+        this.cidade = cidade;
+        this.estado = estado;
+        this.rua = rua;
+        this.numero = numero;
+    }
+
     public Long getId() {
         return id;
     }
