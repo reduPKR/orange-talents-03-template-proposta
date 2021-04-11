@@ -2,6 +2,7 @@ package br.com.proposta.proposta;
 
 import br.com.proposta.errors.ErrorResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +27,14 @@ public class PropostaController {
                                        UriComponentsBuilder uriComponentsBuilder,
                                        BindingResult result){
        Proposta proposta = propostaRequest.toModel();
+
+       Boolean existe = propostaRepository.existsByDocumento(proposta.getDocumento());
+
+       if(existe){
+           return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+                   .body("Documento já cadastrado");
+       }
+
        propostaRepository.save(proposta);
        if(proposta.getId() != 0){
            URI uri = uriComponentsBuilder.path("/proposta/{id}").buildAndExpand(proposta.getId()).toUri();

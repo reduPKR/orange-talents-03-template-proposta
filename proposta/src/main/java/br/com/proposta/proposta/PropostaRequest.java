@@ -4,6 +4,7 @@ import br.com.proposta.endereco.EnderecoRequest;
 import br.com.proposta.proposta.documento.CnpjGroup;
 import br.com.proposta.proposta.documento.CpfGroup;
 import br.com.proposta.proposta.documento.TipoPessoa;
+import br.com.proposta.validador.ValorUnico;
 import org.hibernate.validator.constraints.br.CNPJ;
 import org.hibernate.validator.constraints.br.CPF;
 import org.hibernate.validator.group.GroupSequenceProvider;
