@@ -1,26 +1,23 @@
 version: '3'
 services:
-    mysql:
-        image: mysql
-        command: --default-authentication-plugin=mysql_native_password
-        restart: always
-        environment:
-            MYSQL_ROOT_PASSWORD: "admin"
-            MYSQL_DATABASE: "proposta"
-        ports:
-        - '3307:3306'
-        networks:
-        - minha-rede
-     
-    proposta:
-        build: ./
-        ports:
-            - '8080:8080'   
-        networks: 
-        - minha-rede
-        depends_on:
-            - mysql                
+  proposta:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: proposta
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://docker-mysql:3306/proposta?autoReconnect=true&useSSL=false
+    ports:
+      - '8080:8080'
+    depends_on:
+      - docker-mysql
 
-networks:
-    minha-rede:
-        driver: bridge
+  docker-mysql:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+        MYSQL_ROOT_PASSWORD: "admin"
+        MYSQL_DATABASE: "proposta"
+    ports:
+    - '3307:3306'

@@ -58,4 +58,8 @@ public class PropostaController {
         return ResponseEntity.notFound().build();
     }
 
+    @GetMapping
+    public String testeDocker(){
+        return "Docker respondendo";
+    }
 }
