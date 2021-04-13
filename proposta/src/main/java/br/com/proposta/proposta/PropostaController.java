@@ -37,7 +37,8 @@ public class PropostaController {
 
        propostaRepository.save(proposta);
        if(proposta.getId() != 0){
-           AvaliacaoFinanceira avaliacaoFinanceira = new AvaliacaoFinanceira(proposta);
+           AvaliacaoFinanceiraRequest avaliacaoFinanceiraRequest = new AvaliacaoFinanceiraRequest(proposta);
+           AvaliacaoFinanceiraStatus status = avaliacaoFinanceiraRequest.avaliarCliente();
 
            URI uri = uriComponentsBuilder.path("/proposta/{id}").buildAndExpand(proposta.getId()).toUri();
            return ResponseEntity.created(uri).body(new PropostaResponse(proposta));

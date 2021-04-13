@@ -2,33 +2,24 @@ package br.com.proposta.proposta;
 
 import br.com.proposta.proposta.documento.CnpjGroup;
 import br.com.proposta.proposta.documento.CpfGroup;
-import br.com.proposta.proposta.documento.TipoPessoa;
 import org.hibernate.validator.constraints.br.CNPJ;
 import org.hibernate.validator.constraints.br.CPF;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
-import java.math.BigDecimal;
 
-public class AvaliacaoFinanceira {
-    @Positive
+public class AvaliacaoFinanceiraResponse {
     private long idProposta;
-    @NotNull
-    @NotEmpty
     private String nome;
-    @CPF(groups = CpfGroup.class)
-    @CNPJ(groups = CnpjGroup.class)
     private String documento;
+    private String resultadoSolicitacao;
 
-    public AvaliacaoFinanceira() {
-    }
-
-    public AvaliacaoFinanceira(Proposta proposta) {
-        this.idProposta = proposta.getId();
-        this.nome = proposta.getNome();
-        this.documento = this.getDocumento();
+    public AvaliacaoFinanceiraResponse(long idProposta, String nome, String documento, String resultadoSolicitacao) {
+        this.idProposta = idProposta;
+        this.nome = nome;
+        this.documento = documento;
+        this.resultadoSolicitacao = resultadoSolicitacao;
     }
 
     public long getIdProposta() {
@@ -41,5 +32,9 @@ public class AvaliacaoFinanceira {
 
     public String getDocumento() {
         return documento;
+    }
+
+    public String getResultadoSolicitacao() {
+        return resultadoSolicitacao;
     }
 }
