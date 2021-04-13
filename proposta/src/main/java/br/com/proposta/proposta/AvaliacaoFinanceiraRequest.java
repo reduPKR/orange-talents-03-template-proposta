@@ -3,6 +3,7 @@ package br.com.proposta.proposta;
 import br.com.proposta.proposta.documento.CnpjGroup;
 import br.com.proposta.proposta.documento.CpfGroup;
 import br.com.proposta.proposta.documento.TipoPessoa;
+import feign.FeignException;
 import org.hibernate.validator.constraints.br.CNPJ;
 import org.hibernate.validator.constraints.br.CPF;
 
@@ -43,7 +44,14 @@ public class AvaliacaoFinanceiraRequest {
         return documento;
     }
 
-    public AvaliacaoFinanceiraStatus avaliarCliente() {
-        return AvaliacaoFinanceiraStatus.NAO_ELEGIVEL;
+    public AvaliacaoFinanceiraStatus avaliarCliente(AvaliacaoFinanceiraCliente avaliacao) {
+        try{
+            avaliacao.avaliacaoFinanceira(this);
+            return AvaliacaoFinanceiraStatus.ELEGIVEL;
+        }catch (FeignException.UnprocessableEntity fe){
+            return AvaliacaoFinanceiraStatus.NAO_ELEGIVEL;
+        }catch (Exception e){
+            return AvaliacaoFinanceiraStatus.ERRO_PROCESSAR;
+        }
     }
 }

@@ -22,7 +22,7 @@ public class Proposta {
     @NotNull
     private String documento;
     @Enumerated(EnumType.STRING)
-    private AvaliacaoFinanceiraStatus avaliacaoFinanceiraStatus;
+    private AvaliacaoFinanceiraStatus avaliacaoFinanceiraStatus = AvaliacaoFinanceiraStatus.NAO_PROCESSADO;
     @OneToOne(cascade = CascadeType.PERSIST)
     private Endereco endereco;
 
@@ -65,7 +65,7 @@ public class Proposta {
         return avaliacaoFinanceiraStatus;
     }
 
-    public void AtualizarAvaliacaoFinanceira(AvaliacaoFinanceiraStatus avaliacaoFinanceiraStatus) {
+    public void atualizarAvaliacaoFinanceira(AvaliacaoFinanceiraStatus avaliacaoFinanceiraStatus) {
         this.avaliacaoFinanceiraStatus = avaliacaoFinanceiraStatus;
     }
 }

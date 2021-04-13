@@ -21,6 +21,9 @@ public class PropostaController {
     @Autowired
     private PropostaRepository propostaRepository;
 
+    @Autowired
+    private AvaliacaoFinanceiraCliente avaliacaoFinanceiraCliente;
+
     @PostMapping
     @Transactional
     public ResponseEntity<?> cadastrar(@RequestBody @Valid PropostaRequest propostaRequest,
@@ -38,7 +41,8 @@ public class PropostaController {
        propostaRepository.save(proposta);
        if(proposta.getId() != 0){
            AvaliacaoFinanceiraRequest avaliacaoFinanceiraRequest = new AvaliacaoFinanceiraRequest(proposta);
-           AvaliacaoFinanceiraStatus status = avaliacaoFinanceiraRequest.avaliarCliente();
+           AvaliacaoFinanceiraStatus status = avaliacaoFinanceiraRequest.avaliarCliente(avaliacaoFinanceiraCliente);
+           proposta.atualizarAvaliacaoFinanceira(status);
 
            URI uri = uriComponentsBuilder.path("/proposta/{id}").buildAndExpand(proposta.getId()).toUri();
            return ResponseEntity.created(uri).body(new PropostaResponse(proposta));
