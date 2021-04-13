@@ -21,6 +21,8 @@ public class Proposta {
     private BigDecimal salario;
     @NotNull
     private String documento;
+    @Enumerated(EnumType.STRING)
+    private AvaliacaoFinanceiraStatus avaliacaoFinanceiraStatus;
     @OneToOne(cascade = CascadeType.PERSIST)
     private Endereco endereco;
 
@@ -57,5 +59,13 @@ public class Proposta {
 
     public String getDocumento() {
         return documento;
+    }
+
+    public AvaliacaoFinanceiraStatus getAvaliacaoFinanceira() {
+        return avaliacaoFinanceiraStatus;
+    }
+
+    public void AtualizarAvaliacaoFinanceira(AvaliacaoFinanceiraStatus avaliacaoFinanceiraStatus) {
+        this.avaliacaoFinanceiraStatus = avaliacaoFinanceiraStatus;
     }
 }
