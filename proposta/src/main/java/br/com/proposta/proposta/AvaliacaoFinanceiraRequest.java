@@ -47,9 +47,9 @@ public class AvaliacaoFinanceiraRequest {
     public AvaliacaoFinanceiraStatus avaliarCliente(AvaliacaoFinanceiraCliente avaliacao) {
         try{
             avaliacao.avaliacaoFinanceira(this);
-            return AvaliacaoFinanceiraStatus.ELEGIVEL;
+            return AvaliacaoFinanceiraStatus.SEM_RESTRICAO;
         }catch (FeignException.UnprocessableEntity fe){
-            return AvaliacaoFinanceiraStatus.NAO_ELEGIVEL;
+            return AvaliacaoFinanceiraStatus.COM_RESTRICAO;
         }catch (Exception e){
             return AvaliacaoFinanceiraStatus.ERRO_PROCESSAR;
         }

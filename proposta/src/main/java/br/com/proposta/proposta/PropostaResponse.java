@@ -13,7 +13,7 @@ public class PropostaResponse {
     private BigDecimal salario;
     private String documento;
     private EnderecoResponse endereco;
-    private AvaliacaoFinanceiraStatus avaliacaoFinanceiraStatus;
+    private String status;
 
 
     public PropostaResponse(Proposta proposta) {
@@ -22,7 +22,7 @@ public class PropostaResponse {
         this.salario = proposta.getSalario();
         this.documento = proposta.getDocumento();
         this.endereco = new EnderecoResponse(proposta.getEndereco());
-        this.avaliacaoFinanceiraStatus = proposta.getAvaliacaoFinanceira();
+        this.status = proposta.getAvaliacaoFinanceiraStatus();
     }
 
     public String getNome() {
@@ -45,7 +45,7 @@ public class PropostaResponse {
         return endereco;
     }
 
-    public AvaliacaoFinanceiraStatus getAvaliacaoFinanceiraStatus() {
-        return avaliacaoFinanceiraStatus;
+    public String getStatus() {
+        return status;
     }
 }

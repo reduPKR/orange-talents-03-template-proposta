@@ -68,4 +68,8 @@ public class Proposta {
     public void atualizarAvaliacaoFinanceira(AvaliacaoFinanceiraStatus avaliacaoFinanceiraStatus) {
         this.avaliacaoFinanceiraStatus = avaliacaoFinanceiraStatus;
     }
+
+    public String getAvaliacaoFinanceiraStatus() {
+        return avaliacaoFinanceiraStatus.getStatus();
+    }
 }
