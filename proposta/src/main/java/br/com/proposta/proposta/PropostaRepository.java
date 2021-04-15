@@ -9,5 +9,5 @@ import java.util.List;
 public interface PropostaRepository extends JpaRepository<Proposta,Long> {
     Boolean existsByDocumento(String documento);
 
-    List<Proposta> findByAvaliacaoFinanceiraStatusAndCardIdIsNull(AvaliacaoFinanceiraStatus status);
+    List<Proposta> findByAvaliacaoFinanceiraStatusAndCartaoIdIsNull(AvaliacaoFinanceiraStatus semRestricao);
 }

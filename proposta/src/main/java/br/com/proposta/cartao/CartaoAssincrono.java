@@ -16,6 +16,10 @@ public class CartaoAssincrono {
 
     @Scheduled(fixedDelay = 10000)//cada 10 segundos
     public void analisarPropostasSemCartoes(){
-        List<Proposta> lista = propostaRepository.findByAvaliacaoFinanceiraStatusAndCardIdIsNull(AvaliacaoFinanceiraStatus.SEM_RESTRICAO);
+        List<Proposta> lista = propostaRepository.findByAvaliacaoFinanceiraStatusAndCartaoIdIsNull(AvaliacaoFinanceiraStatus.SEM_RESTRICAO);
+        lista.forEach(this::adicionarCartao);
+    }
+
+    private void adicionarCartao(Proposta proposta) {
     }
 }
