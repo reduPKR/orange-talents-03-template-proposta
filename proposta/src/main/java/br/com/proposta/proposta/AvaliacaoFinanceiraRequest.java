@@ -3,6 +3,7 @@ package br.com.proposta.proposta;
 import br.com.proposta.proposta.documento.CnpjGroup;
 import br.com.proposta.proposta.documento.CpfGroup;
 import br.com.proposta.proposta.documento.TipoPessoa;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import feign.FeignException;
 import org.hibernate.validator.constraints.br.CNPJ;
 import org.hibernate.validator.constraints.br.CPF;
@@ -14,25 +15,23 @@ import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 
 public class AvaliacaoFinanceiraRequest {
-    @Positive
-    private long idProposta;
-    @NotNull
-    @NotEmpty
+    @JsonProperty("idProposta")
+    private String idProposta;
+    @JsonProperty("nome")
     private String nome;
-    @CPF(groups = CpfGroup.class)
-    @CNPJ(groups = CnpjGroup.class)
+    @JsonProperty("documento")
     private String documento;
 
     public AvaliacaoFinanceiraRequest() {
     }
 
     public AvaliacaoFinanceiraRequest(Proposta proposta) {
-        this.idProposta = proposta.getId();
+        this.idProposta = proposta.getId().toString();
         this.nome = proposta.getNome();
         this.documento = proposta.getDocumento();
     }
 
-    public long getIdProposta() {
+    public String getIdProposta() {
         return idProposta;
     }
 
