@@ -21,5 +21,6 @@ public class CartaoAssincrono {
     }
 
     private void adicionarCartao(Proposta proposta) {
+
     }
 }
