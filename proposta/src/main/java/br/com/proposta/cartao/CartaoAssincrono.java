@@ -1,5 +1,6 @@
 package br.com.proposta.cartao;
 
+import br.com.proposta.apiRequest.RequestGenerico;
 import br.com.proposta.proposta.AvaliacaoFinanceiraStatus;
 import br.com.proposta.proposta.Proposta;
 import br.com.proposta.proposta.PropostaRepository;
@@ -14,6 +15,9 @@ public class CartaoAssincrono {
     @Autowired
     private PropostaRepository propostaRepository;
 
+    @Autowired
+    private CriacaoCartao criacaoCartao;
+
     @Scheduled(fixedDelay = 10000)//cada 10 segundos
     public void analisarPropostasSemCartoes(){
         List<Proposta> lista = propostaRepository.findByAvaliacaoFinanceiraStatusAndCartaoIdIsNull(AvaliacaoFinanceiraStatus.SEM_RESTRICAO);
@@ -21,6 +25,14 @@ public class CartaoAssincrono {
     }
 
     private void adicionarCartao(Proposta proposta) {
+        RequestGenerico cartaoRequest = new RequestGenerico(
+                proposta.getId().toString(),
+                proposta.getNome(),
+                proposta.getDocumento()
+        );
 
+        CartaoResponse cartao = criacaoCartao.gerar(cartaoRequest);
+        proposta.setCartaoId(cartao.getIdCartao());
+        //propostaRepository.save(proposta);
     }
 }

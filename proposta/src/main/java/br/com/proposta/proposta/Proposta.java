@@ -68,6 +68,10 @@ public class Proposta {
         return cartaoId;
     }
 
+    public void setCartaoId(String cartaoId) {
+        this.cartaoId = cartaoId;
+    }
+
     public AvaliacaoFinanceiraStatus getAvaliacaoFinanceira() {
         return avaliacaoFinanceiraStatus;
     }
