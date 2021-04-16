@@ -32,7 +32,7 @@ public class CartaoAssincrono {
         );
 
         CartaoResponse cartao = criacaoCartao.gerar(cartaoRequest);
-        proposta.setCartaoId(cartao.getIdCartao());
-        //propostaRepository.save(proposta);
+        proposta.setCartaoId(cartao.getId());
+        propostaRepository.save(proposta);
     }
 }
