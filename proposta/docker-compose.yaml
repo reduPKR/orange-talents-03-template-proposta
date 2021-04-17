@@ -11,6 +11,8 @@ services:
       - '8080:8080'
     depends_on:
       - docker-mysql
+      - contas
+      - analise
 
   docker-mysql:
     image: mysql
