@@ -16,6 +16,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -25,6 +26,12 @@ public class BiometriaController {
     private BiometriaRepository biometriaRepository;
     @Autowired
     private CriacaoCartao criacaoCartao;
+
+    @GetMapping("/base64")
+    public String converteParaTeste(){
+        String mensagem = "Teste de gerar base64 para mandar no post";
+        return Base64.getEncoder().encodeToString(mensagem.getBytes());
+    }
 
     @PostMapping("/{cartaoId}")
     @Transactional
@@ -58,9 +65,13 @@ public class BiometriaController {
         return ResponseEntity.badRequest().body(errors);
     }
 
-    @GetMapping("/base64")
-    public String converteParaTeste(){
-        String mensagem = "Teste de gerar base64 para mandar no post";
-        return Base64.getEncoder().encodeToString(mensagem.getBytes());
+    @GetMapping("/{id}")
+    public ResponseEntity<?> cadastrar(@PathVariable("id") long id){
+        Optional<Biometria> biometria = biometriaRepository.findById(id);
+
+        if(biometria.isPresent()){
+            return ResponseEntity.ok().body(new BiometriaResponse(biometria.get()));
+        }
+        return ResponseEntity.badRequest().body("Biometria não encontrada");
     }
 }
