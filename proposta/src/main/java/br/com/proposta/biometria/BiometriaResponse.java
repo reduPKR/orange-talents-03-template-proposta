@@ -2,28 +2,20 @@ package br.com.proposta.biometria;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
-@Entity
-public class Biometria {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class BiometriaResponse {
     private long id;
-    @NotNull
     private String cartaoId;
-    @NotNull
     private String biometria;
-    @CreationTimestamp
     private LocalDateTime dataCriacao;
 
-    public Biometria() {
-    }
-
-    public Biometria(String cartaoId, String biometria) {
-        this.cartaoId = cartaoId;
-        this.biometria = biometria;
+    public BiometriaResponse(Biometria biometria) {
+        this.id = biometria.getId();
+        this.cartaoId = biometria.getCartaoId();
+        this.biometria = biometria.getBiometria();
+        this.dataCriacao = biometria.getDataCriacao();
     }
 
     public long getId() {
