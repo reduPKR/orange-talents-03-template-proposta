@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "CriacaoCartao", url = "http://localhost:8888/api/cartoes")
+@FeignClient(name = "CriacaoCartao", url = "${api.cartoes.url}")
 public interface CriacaoCartao {
     @PostMapping
     CartaoResponse gerar(@RequestBody RequestGenerico cartao);
