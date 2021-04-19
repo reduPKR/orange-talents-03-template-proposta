@@ -4,7 +4,8 @@ services:
     build:
       context: ./
       dockerfile: Dockerfile
-    image: proposta
+    image: redu/proposta
+    #restart: always
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://docker-mysql:3306/proposta?autoReconnect=true&useSSL=false
     ports:
@@ -16,6 +17,9 @@ services:
 
   docker-mysql:
     image: mysql
+    volumes:
+      - mysql-volume:/var/lib/mysql/data
+
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
@@ -24,7 +28,8 @@ services:
     ports:
     - '3307:3306'
     
-   #Daqui para baixo peguei na zup
+
+  #Daqui para baixo peguei na zup
   zookeeper:
     image: "confluentinc/cp-zookeeper:5.2.1"
     environment:
@@ -162,3 +167,4 @@ volumes:
   grafana-volume:
   prometheus-volume:
   postgres-volume:
+  mysql-volume:

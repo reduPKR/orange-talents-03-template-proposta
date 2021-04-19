@@ -1,4 +1,4 @@
-package br.com.proposta.apiRequest;
+package br.com.proposta.apiRequestGenerico;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

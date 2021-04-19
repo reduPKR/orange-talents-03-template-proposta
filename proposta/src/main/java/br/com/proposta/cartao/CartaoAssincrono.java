@@ -1,6 +1,6 @@
 package br.com.proposta.cartao;
 
-import br.com.proposta.apiRequest.RequestGenerico;
+import br.com.proposta.apiRequestGenerico.RequestGenerico;
 import br.com.proposta.proposta.AvaliacaoFinanceiraStatus;
 import br.com.proposta.proposta.Proposta;
 import br.com.proposta.proposta.PropostaRepository;

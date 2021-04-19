@@ -1,6 +1,6 @@
 package br.com.proposta.proposta;
 
-import br.com.proposta.apiRequest.RequestGenerico;
+import br.com.proposta.apiRequestGenerico.RequestGenerico;
 import feign.FeignException;
 
 public class AvaliacaoFinanceiraRequest {
