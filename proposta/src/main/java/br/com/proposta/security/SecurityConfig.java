@@ -1,27 +1,35 @@
 package br.com.proposta.security;
 
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig  extends WebSecurityConfigurerAdapter {
+    @Value("${spring.security.oauth2.jwt.jwk-set-uri}")
+    private String jwkUri;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors()
-                .and().authorizeRequests()
+        http.authorizeRequests(authorizeRequests->
+                authorizeRequests
                 .antMatchers(HttpMethod.GET, "/proposta/**").hasAuthority("SCOPE_READ")
                 .antMatchers(HttpMethod.POST, "/proposta/**").hasAuthority("SCOPE_WRITE")
-                .anyRequest().authenticated()
-                .and().oauth2ResourceServer().jwt();
+                .anyRequest().authenticated())
+        .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
     }
 
-
+    @Bean
+    JwtDecoder jwtDecoder(){
+        return NimbusJwtDecoder.withJwkSetUri(jwkUri).build();
+    }
 }
