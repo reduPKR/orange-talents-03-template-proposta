@@ -2,32 +2,20 @@ package br.com.proposta.cartao;
 
 import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
-@Entity
-public class CartaoBloqueio {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class CartaoBloqueioResponse {
     private String cartaoId;
-    @NotNull
     private String ip;
-    @CreationTimestamp
     private LocalDateTime dataBloqueio;
-    @NotNull
     private String userAgent;
 
-    public CartaoBloqueio() {
-    }
-
-    public CartaoBloqueio(String cartaoId, String ip, String userAgent) {
-        this.cartaoId = cartaoId;
-        this.ip = ip;
-        this.userAgent = userAgent;
+    public CartaoBloqueioResponse(CartaoBloqueio cartaoBloqueio) {
+        this.cartaoId = cartaoBloqueio.getCartaoId();
+        this.ip = cartaoBloqueio.getIp();
+        this.userAgent = cartaoBloqueio.getUserAgent();
+        this.dataBloqueio = cartaoBloqueio.getDataBloqueio();
     }
 
     public String getCartaoId() {
