@@ -21,6 +21,15 @@ public class CartaoBloqueio {
     @NotNull
     private String userAgent;
 
+    public CartaoBloqueio() {
+    }
+
+    public CartaoBloqueio(String id, String ip, String userAgent) {
+        this.id = id;
+        this.ip = ip;
+        this.userAgent = userAgent;
+    }
+
     public String getId() {
         return id;
     }

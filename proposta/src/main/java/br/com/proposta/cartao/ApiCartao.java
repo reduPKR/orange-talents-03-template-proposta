@@ -7,11 +7,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@FeignClient(name = "CriacaoCartao", url = "${api.cartoes.url}")
-public interface CriacaoCartao {
+@FeignClient(name = "ApiCartao", url = "${api.cartoes.url}")
+public interface ApiCartao {
     @PostMapping
     CartaoResponse gerar(@RequestBody RequestGenerico cartao);
 
     @GetMapping("/{cartaoId}")
     CartaoResponse procurar(@PathVariable("cartaoId") String cartaoId);
+
+    @GetMapping("/{cartaoId}/bloqueio")
+    CartaoApiBloqueio bloquear(@PathVariable("cartaoId") String cartaoId);
 }

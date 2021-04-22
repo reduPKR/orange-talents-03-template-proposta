@@ -1,7 +1,7 @@
 package br.com.proposta.biometria;
 
 import br.com.proposta.cartao.CartaoResponse;
-import br.com.proposta.cartao.CriacaoCartao;
+import br.com.proposta.cartao.ApiCartao;
 import br.com.proposta.errors.ErrorResponse;
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class BiometriaController {
     @Autowired
     private BiometriaRepository biometriaRepository;
     @Autowired
-    private CriacaoCartao criacaoCartao;
+    private ApiCartao apiCartao;
 
     @GetMapping("/base64")
     public String converteParaTeste(){
@@ -41,7 +41,7 @@ public class BiometriaController {
                                        BindingResult result){
         if(!result.hasErrors()){
             try{
-                CartaoResponse cartao = criacaoCartao.procurar(cartaoId);
+                CartaoResponse cartao = apiCartao.procurar(cartaoId);
                 if(biometriaRequest.validar()){
                     Biometria biometria = biometriaRequest.toModel(cartaoId);
                     biometriaRepository.save(biometria);

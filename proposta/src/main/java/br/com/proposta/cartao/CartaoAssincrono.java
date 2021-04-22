@@ -16,7 +16,7 @@ public class CartaoAssincrono {
     private PropostaRepository propostaRepository;
 
     @Autowired
-    private CriacaoCartao criacaoCartao;
+    private ApiCartao apiCartao;
 
     @Scheduled(fixedDelay = 10000)//cada 10 segundos
     public void analisarPropostasSemCartoes(){
@@ -31,7 +31,7 @@ public class CartaoAssincrono {
                 proposta.getDocumento()
         );
 
-        CartaoResponse cartao = criacaoCartao.gerar(cartaoRequest);
+        CartaoResponse cartao = apiCartao.gerar(cartaoRequest);
         proposta.setCartaoId(cartao.getId());
         propostaRepository.save(proposta);
     }
