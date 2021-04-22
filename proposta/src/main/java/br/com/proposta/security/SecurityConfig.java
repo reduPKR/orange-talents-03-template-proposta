@@ -29,6 +29,8 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 authorizeRequests
                 .antMatchers(HttpMethod.GET, "/proposta/**").hasAuthority("READ")
                 .antMatchers(HttpMethod.POST, "/proposta/**").hasAuthority("WRITE")
+                .antMatchers(HttpMethod.GET, "/biometria/**").hasAuthority("READ")
+                .antMatchers(HttpMethod.POST, "/biometria/**").hasAuthority("WRITE")
                 .anyRequest().authenticated())
         .oauth2ResourceServer().jwt()
                 .jwtAuthenticationConverter(getJwtAuthenticationConverter());
