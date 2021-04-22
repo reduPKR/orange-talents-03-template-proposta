@@ -13,7 +13,7 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     @Value("${spring.security.oauth2.jwt.jwk-set-uri}")
     private String jwkUri;
@@ -22,8 +22,8 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests(authorizeRequests->
                 authorizeRequests
-                .antMatchers(HttpMethod.GET, "/proposta/**").hasAuthority("SCOPE_READ")
-                .antMatchers(HttpMethod.POST, "/proposta/**").hasAuthority("SCOPE_WRITE")
+                .antMatchers(HttpMethod.GET, "/proposta/**").hasAuthority("READ")
+                .antMatchers(HttpMethod.POST, "/proposta/**").hasAuthority("WRITE")
                 .anyRequest().authenticated())
         .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt);
     }
