@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @Entity
 public class CartaoBloqueio {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String cartaoId;
     @NotNull
     private String ip;

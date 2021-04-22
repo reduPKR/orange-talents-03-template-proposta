@@ -30,7 +30,10 @@ public class CartaoController {
             if(procurarCartao(cartaoId)){
                 Optional<CartaoBloqueio> optionalCartaoBloqueio = cartaoBloqueioRepository.findByCartaoId(cartaoId);
                 if(optionalCartaoBloqueio.isEmpty()){
-                    CartaoApiBloqueio cartaoApiBloqueio = apiCartao.bloquear(cartaoId);
+
+                    //Comentei para usar um 'mock', testei a rota esta certa com swagger, porem da erro 404
+                    //CartaoApiBloqueio cartaoApiBloqueio = apiCartao.bloquear(cartaoId, new CartaoBloqueioApiRequest("proposta"));
+                    CartaoApiBloqueio cartaoApiBloqueio = new CartaoApiBloqueio();
 
                     if(cartaoApiBloqueio.getBloqueado()){
                         CartaoBloqueio cartaoBloqueio = cartaoBloqueioRequest.toModel(cartaoId);

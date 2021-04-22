@@ -18,7 +18,7 @@ import org.springframework.security.oauth2.server.resource.authentication.JwtAut
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 
 @Configuration
-@EnableWebSecurity(debug = true)
+@EnableWebSecurity
 public class SecurityConfig  extends WebSecurityConfigurerAdapter {
     @Value("${spring.security.oauth2.jwt.jwk-set-uri}")
     private String jwkUri;
@@ -31,6 +31,7 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/proposta/**").hasAuthority("WRITE")
                 .antMatchers(HttpMethod.GET, "/biometria/**").hasAuthority("READ")
                 .antMatchers(HttpMethod.POST, "/biometria/**").hasAuthority("WRITE")
+                .antMatchers(HttpMethod.POST, "/cartoes/**").hasAuthority("WRITE")
                 .anyRequest().authenticated())
         .oauth2ResourceServer().jwt()
                 .jwtAuthenticationConverter(getJwtAuthenticationConverter());
