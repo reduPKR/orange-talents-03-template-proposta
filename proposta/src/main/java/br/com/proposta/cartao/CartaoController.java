@@ -1,7 +1,7 @@
 package br.com.proposta.cartao;
 
 import br.com.proposta.errors.ErrorResponse;
-import feign.FeignException;
+import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -19,6 +19,9 @@ public class CartaoController {
     @Autowired
     private CartaoBloqueioRepository cartaoBloqueioRepository;
     @Autowired
+    private CartaoAvisoRepository cartaoAvisoRepository;
+
+    @Autowired
     private ApiCartao apiCartao;
 
     @PostMapping("/{cartaoId}/bloqueio")
@@ -30,9 +33,9 @@ public class CartaoController {
             if(procurarCartao(cartaoId)){
                 Optional<CartaoBloqueio> optionalCartaoBloqueio = cartaoBloqueioRepository.findByCartaoId(cartaoId);
                 if(optionalCartaoBloqueio.isEmpty()){
-                    CartaoApiBloqueio cartaoApiBloqueio = apiCartao.bloquear(cartaoId, new CartaoBloqueioApiRequest("proposta"));
+                    CartaoApiResponseGenerico cartaoApiResponseGenerico = apiCartao.bloquear(cartaoId, new CartaoBloqueioApiRequest("proposta"));
 
-                    if(cartaoApiBloqueio.getBloqueado()){
+                    if(cartaoApiResponseGenerico.getBloqueado()){
                         CartaoBloqueio cartaoBloqueio = cartaoBloqueioRequest.toModel(cartaoId);
                         cartaoBloqueioRepository.save(cartaoBloqueio);
 
@@ -62,5 +65,31 @@ public class CartaoController {
         } catch(Exception e){
             return false;
         }
+    }
+
+    @PostMapping("/{cartaoId}/avisos")
+    public ResponseEntity<?> avisoDeViagem(@PathVariable String cartaoId,
+                                           @RequestBody @Valid CartaoAvisoRequest cartaoAvisoRequest,
+                                           BindingResult result){
+        if(!result.hasErrors()){
+            if(procurarCartao(cartaoId)){
+                CartaoApiResponseGenerico cartaoApiResponseGenerico = apiCartao.avisar(cartaoId, new CartaoAvisoApiRequest(cartaoAvisoRequest));
+
+                if(cartaoApiResponseGenerico.getAvisoDeViagem()){
+                    CartaoAviso cartaoAviso = cartaoAvisoRequest.toModel(cartaoId);
+
+                    cartaoAvisoRepository.save(cartaoAviso);
+                    return ResponseEntity.ok(new CartaoAvisoResponse(cartaoAviso));
+                }
+            }
+
+            return ResponseEntity.notFound().build();
+        }
+
+        List<ErrorResponse> errors = result.getFieldErrors()
+                .stream().map(ErrorResponse::new)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.badRequest().body(errors);
     }
 }

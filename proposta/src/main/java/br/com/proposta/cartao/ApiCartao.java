@@ -16,5 +16,8 @@ public interface ApiCartao {
     CartaoResponse procurar(@PathVariable("cartaoId") String cartaoId);
 
     @PostMapping("/{cartaoId}/bloqueios")
-    CartaoApiBloqueio bloquear(@PathVariable("cartaoId") String cartaoId, @RequestBody CartaoBloqueioApiRequest request);
+    CartaoApiResponseGenerico bloquear(@PathVariable("cartaoId") String cartaoId, @RequestBody CartaoBloqueioApiRequest request);
+
+    @PostMapping("/{cartaoId}/avisos")
+    CartaoApiResponseGenerico avisar(@PathVariable("cartaoId") String cartaoId, @RequestBody CartaoAvisoApiRequest request);
 }

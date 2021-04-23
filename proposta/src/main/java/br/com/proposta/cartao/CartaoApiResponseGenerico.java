@@ -1,9 +1,9 @@
 package br.com.proposta.cartao;
 
-public class CartaoApiBloqueio {
+public class CartaoApiResponseGenerico {
     private String resultado;
 
-    public CartaoApiBloqueio() {
+    public CartaoApiResponseGenerico() {
         this.resultado = "BLOQUEADO";
     }
 
@@ -13,5 +13,9 @@ public class CartaoApiBloqueio {
 
     public boolean getBloqueado() {
         return resultado.equals("BLOQUEADO");
+    }
+
+    public boolean getAvisoDeViagem() {
+        return resultado.equals("CRIADO");
     }
 }
