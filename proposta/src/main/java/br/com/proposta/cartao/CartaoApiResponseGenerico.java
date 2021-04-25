@@ -4,7 +4,10 @@ public class CartaoApiResponseGenerico {
     private String resultado;
 
     public CartaoApiResponseGenerico() {
-        this.resultado = "BLOQUEADO";
+    }
+
+    public CartaoApiResponseGenerico(String resultado) {
+        this.resultado = resultado;
     }
 
     public String getResultado() {

@@ -33,13 +33,17 @@ public class CartaoController {
             if(procurarCartao(cartaoId)){
                 Optional<CartaoBloqueio> optionalCartaoBloqueio = cartaoBloqueioRepository.findByCartaoId(cartaoId);
                 if(optionalCartaoBloqueio.isEmpty()){
-                    CartaoApiResponseGenerico cartaoApiResponseGenerico = apiCartao.bloquear(cartaoId, new CartaoBloqueioApiRequest("proposta"));
+                    try {
+                        CartaoApiResponseGenerico cartaoApiResponseGenerico = apiCartao.bloquear(cartaoId, new CartaoBloqueioApiRequest("proposta"));
 
-                    if(cartaoApiResponseGenerico.getBloqueado()){
-                        CartaoBloqueio cartaoBloqueio = cartaoBloqueioRequest.toModel(cartaoId);
-                        cartaoBloqueioRepository.save(cartaoBloqueio);
+                        if(cartaoApiResponseGenerico.getBloqueado()){
+                            CartaoBloqueio cartaoBloqueio = cartaoBloqueioRequest.toModel(cartaoId);
+                            cartaoBloqueioRepository.save(cartaoBloqueio);
 
-                        return ResponseEntity.ok(new CartaoBloqueioResponse(cartaoBloqueio));//200
+                            return ResponseEntity.ok(new CartaoBloqueioResponse(cartaoBloqueio));//200
+                        }
+                    }catch (Exception e){
+                        System.out.println("Falha 422");
                     }
                 }
 
@@ -73,13 +77,18 @@ public class CartaoController {
                                            BindingResult result){
         if(!result.hasErrors()){
             if(procurarCartao(cartaoId)){
-                CartaoApiResponseGenerico cartaoApiResponseGenerico = apiCartao.avisar(cartaoId, new CartaoAvisoApiRequest(cartaoAvisoRequest));
 
-                if(cartaoApiResponseGenerico.getAvisoDeViagem()){
-                    CartaoAviso cartaoAviso = cartaoAvisoRequest.toModel(cartaoId);
+                try {
+                    CartaoApiResponseGenerico cartaoApiResponseGenerico = apiCartao.avisar(cartaoId, new CartaoAvisoApiRequest(cartaoAvisoRequest));
 
-                    cartaoAvisoRepository.save(cartaoAviso);
-                    return ResponseEntity.ok(new CartaoAvisoResponse(cartaoAviso));
+                    if(cartaoApiResponseGenerico.getAvisoDeViagem()){
+                        CartaoAviso cartaoAviso = cartaoAvisoRequest.toModel(cartaoId);
+
+                        cartaoAvisoRepository.save(cartaoAviso);
+                        return ResponseEntity.ok(new CartaoAvisoResponse(cartaoAviso));
+                    }
+                }catch (Exception e){
+                    return ResponseEntity.unprocessableEntity().body(new CartaoApiResponseGenerico("FALHA"));
                 }
             }
 

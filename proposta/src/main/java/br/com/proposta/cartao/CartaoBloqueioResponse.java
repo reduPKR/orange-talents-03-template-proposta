@@ -15,7 +15,11 @@ public class CartaoBloqueioResponse {
         this.cartaoId = cartaoBloqueio.getCartaoId();
         this.ip = cartaoBloqueio.getIp();
         this.userAgent = cartaoBloqueio.getUserAgent();
-        this.dataBloqueio = cartaoBloqueio.getDataBloqueio();
+
+        if(cartaoBloqueio.getDataBloqueio() != null)
+            this.dataBloqueio = cartaoBloqueio.getDataBloqueio();
+        else
+            this.dataBloqueio = LocalDateTime.now();
     }
 
     public String getCartaoId() {

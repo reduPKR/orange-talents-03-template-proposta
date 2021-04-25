@@ -20,8 +20,12 @@ public class CartaoAvisoResponse {
         destino = cartaoAviso.getDestino();
         validoAte = cartaoAviso.getValidoAte();
         ip = cartaoAviso.getIp();
-        dataAviso = cartaoAviso.getDataAviso();
         userAgent = cartaoAviso.getUserAgent();
+
+        if(cartaoAviso.getDataAviso() != null)
+            dataAviso = cartaoAviso.getDataAviso();
+        else
+            dataAviso = LocalDateTime.now();
     }
 
     public String getCartaoId() {
