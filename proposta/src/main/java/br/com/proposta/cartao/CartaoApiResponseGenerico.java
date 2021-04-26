@@ -1,6 +1,7 @@
 package br.com.proposta.cartao;
 
 public class CartaoApiResponseGenerico {
+    private String id;
     private String resultado;
 
     public CartaoApiResponseGenerico() {
@@ -8,6 +9,10 @@ public class CartaoApiResponseGenerico {
 
     public CartaoApiResponseGenerico(String resultado) {
         this.resultado = resultado;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public String getResultado() {
@@ -20,5 +25,9 @@ public class CartaoApiResponseGenerico {
 
     public boolean getAvisoDeViagem() {
         return resultado.equals("CRIADO");
+    }
+
+    public boolean getAssociado() {
+        return resultado.equals("ASSOCIADO");
     }
 }

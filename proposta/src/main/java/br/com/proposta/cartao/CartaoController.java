@@ -1,9 +1,9 @@
 package br.com.proposta.cartao;
 
 import br.com.proposta.errors.ErrorResponse;
-import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -20,11 +20,14 @@ public class CartaoController {
     private CartaoBloqueioRepository cartaoBloqueioRepository;
     @Autowired
     private CartaoAvisoRepository cartaoAvisoRepository;
+    @Autowired
+    private CarteiraDigitalRepository carteiraDigitalRepository;
 
     @Autowired
     private ApiCartao apiCartao;
 
     @PostMapping("/{cartaoId}/bloqueio")
+    @Transactional
     public ResponseEntity<?> bloquear(@PathVariable String cartaoId,
                          @RequestBody @Valid CartaoBloqueioRequest cartaoBloqueioRequest,
                          BindingResult result){
@@ -43,7 +46,7 @@ public class CartaoController {
                             return ResponseEntity.ok(new CartaoBloqueioResponse(cartaoBloqueio));//200
                         }
                     }catch (Exception e){
-                        System.out.println("Falha 422");
+                        System.out.println("FALHA  AO PROCESSAR");
                     }
                 }
 
@@ -72,6 +75,7 @@ public class CartaoController {
     }
 
     @PostMapping("/{cartaoId}/avisos")
+    @Transactional
     public ResponseEntity<?> avisoDeViagem(@PathVariable String cartaoId,
                                            @RequestBody @Valid CartaoAvisoRequest cartaoAvisoRequest,
                                            BindingResult result){
@@ -88,7 +92,39 @@ public class CartaoController {
                         return ResponseEntity.ok(new CartaoAvisoResponse(cartaoAviso));
                     }
                 }catch (Exception e){
-                    return ResponseEntity.unprocessableEntity().body(new CartaoApiResponseGenerico("FALHA"));
+                    return ResponseEntity.unprocessableEntity().body(new CartaoApiResponseGenerico("FALHA AO PROCESSAR"));
+                }
+            }
+
+            return ResponseEntity.notFound().build();
+        }
+
+        List<ErrorResponse> errors = result.getFieldErrors()
+                .stream().map(ErrorResponse::new)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.badRequest().body(errors);
+    }
+
+    @PostMapping("/{cartaoId}/carteiras")
+    @Transactional
+    public ResponseEntity<?> associarCarteira(@PathVariable String cartaoId,
+                                              @RequestBody @Valid CarteiraDigitalRequest carteiraDigitalRequest,
+                                              BindingResult result){
+
+        if(!result.hasErrors()){
+            if(procurarCartao(cartaoId)){
+                try {
+                    CartaoApiResponseGenerico cartaoApiResponseGenerico = apiCartao.associarCarteira(cartaoId, carteiraDigitalRequest);
+
+                    if(cartaoApiResponseGenerico.getAssociado()){
+                        CarteiraDigital carteiraDigital = carteiraDigitalRequest.toModel(cartaoId);
+
+                        carteiraDigitalRepository.save(carteiraDigital);
+                        ResponseEntity.ok(new CarteiraDigitalResponse(carteiraDigital));
+                    }
+                }catch (Exception e){
+                    return ResponseEntity.unprocessableEntity().body(new CartaoApiResponseGenerico("FALHA AO PROCESSAR"));
                 }
             }
 
