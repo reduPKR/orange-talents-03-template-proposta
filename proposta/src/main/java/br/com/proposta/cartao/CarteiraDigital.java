@@ -9,8 +9,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class CarteiraDigital {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String cartaoId;
+    private String carteiraId;
     @NotNull
     private String email;
     @Enumerated(EnumType.STRING)
@@ -19,14 +18,14 @@ public class CarteiraDigital {
     public CarteiraDigital() {
     }
 
-    public CarteiraDigital(String cartaoId, String email, CarteiraDigitalEnum carteira) {
-        this.cartaoId = cartaoId;
+    public CarteiraDigital(String carteiraId, String email, CarteiraDigitalEnum carteira) {
+        this.carteiraId = carteiraId;
         this.email = email;
         this.carteira = carteira;
     }
 
-    public String getCartaoId() {
-        return cartaoId;
+    public String getCarteiraId() {
+        return carteiraId;
     }
 
     public String getEmail() {

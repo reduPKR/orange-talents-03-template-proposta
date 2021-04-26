@@ -28,6 +28,6 @@ public class CartaoApiResponseGenerico {
     }
 
     public boolean getAssociado() {
-        return resultado.equals("ASSOCIADO");
+        return resultado.equals("ASSOCIADA");
     }
 }

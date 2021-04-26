@@ -22,5 +22,5 @@ public interface ApiCartao {
     CartaoApiResponseGenerico avisar(@PathVariable("cartaoId") String cartaoId, @RequestBody CartaoAvisoApiRequest request);
 
     @PostMapping("/{cartaoId}/carteiras")
-    CartaoApiResponseGenerico associarCarteira(String cartaoId, @RequestBody CarteiraDigitalRequest carteiraDigitalRequest);
+    CartaoApiResponseGenerico associarCarteira(@PathVariable("cartaoId") String cartaoId, @RequestBody CarteiraDigitalAPIRequest request);
 }

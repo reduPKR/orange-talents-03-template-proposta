@@ -7,8 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,10 +29,10 @@ public class CartaoController {
     private ApiCartao apiCartao;
 
     @PostMapping("/{cartaoId}/bloqueio")
-    @Transactional
     public ResponseEntity<?> bloquear(@PathVariable String cartaoId,
                          @RequestBody @Valid CartaoBloqueioRequest cartaoBloqueioRequest,
-                         BindingResult result){
+                         BindingResult result,
+                         UriComponentsBuilder uriComponentsBuilder){
 
         if(!result.hasErrors()){
             if(procurarCartao(cartaoId)){
@@ -43,7 +45,8 @@ public class CartaoController {
                             CartaoBloqueio cartaoBloqueio = cartaoBloqueioRequest.toModel(cartaoId);
                             cartaoBloqueioRepository.save(cartaoBloqueio);
 
-                            return ResponseEntity.ok(new CartaoBloqueioResponse(cartaoBloqueio));//200
+                            URI uri = uriComponentsBuilder.path("/cartao/{id}/bloqueio").buildAndExpand(cartaoBloqueio.getCartaoId()).toUri();
+                            return ResponseEntity.created(uri).body(new CartaoBloqueioResponse(cartaoBloqueio));//200
                         }
                     }catch (Exception e){
                         System.out.println("FALHA  AO PROCESSAR");
@@ -75,10 +78,10 @@ public class CartaoController {
     }
 
     @PostMapping("/{cartaoId}/avisos")
-    @Transactional
     public ResponseEntity<?> avisoDeViagem(@PathVariable String cartaoId,
                                            @RequestBody @Valid CartaoAvisoRequest cartaoAvisoRequest,
-                                           BindingResult result){
+                                           BindingResult result,
+                                           UriComponentsBuilder uriComponentsBuilder){
         if(!result.hasErrors()){
             if(procurarCartao(cartaoId)){
 
@@ -89,7 +92,9 @@ public class CartaoController {
                         CartaoAviso cartaoAviso = cartaoAvisoRequest.toModel(cartaoId);
 
                         cartaoAvisoRepository.save(cartaoAviso);
-                        return ResponseEntity.ok(new CartaoAvisoResponse(cartaoAviso));
+
+                        URI uri = uriComponentsBuilder.path("/cartao/{id}/aviso").buildAndExpand(cartaoAviso.getCartaoId()).toUri();
+                        return ResponseEntity.created(uri).body(new CartaoAvisoResponse(cartaoAviso));
                     }
                 }catch (Exception e){
                     return ResponseEntity.unprocessableEntity().body(new CartaoApiResponseGenerico("FALHA AO PROCESSAR"));
@@ -107,21 +112,24 @@ public class CartaoController {
     }
 
     @PostMapping("/{cartaoId}/carteiras")
-    @Transactional
     public ResponseEntity<?> associarCarteira(@PathVariable String cartaoId,
                                               @RequestBody @Valid CarteiraDigitalRequest carteiraDigitalRequest,
-                                              BindingResult result){
+                                              BindingResult result,
+                                              UriComponentsBuilder uriComponentsBuilder){
 
         if(!result.hasErrors()){
             if(procurarCartao(cartaoId)){
                 try {
-                    CartaoApiResponseGenerico cartaoApiResponseGenerico = apiCartao.associarCarteira(cartaoId, carteiraDigitalRequest);
-
+                    CartaoApiResponseGenerico cartaoApiResponseGenerico = apiCartao.associarCarteira(cartaoId, new CarteiraDigitalAPIRequest(carteiraDigitalRequest));
+                    System.out.println(cartaoApiResponseGenerico.getAssociado());
+                    System.out.println(cartaoApiResponseGenerico.getId());
                     if(cartaoApiResponseGenerico.getAssociado()){
-                        CarteiraDigital carteiraDigital = carteiraDigitalRequest.toModel(cartaoId);
+                        CarteiraDigital carteiraDigital = carteiraDigitalRequest.toModel(cartaoApiResponseGenerico.getId());
 
                         carteiraDigitalRepository.save(carteiraDigital);
-                        ResponseEntity.ok(new CarteiraDigitalResponse(carteiraDigital));
+
+                        URI uri = uriComponentsBuilder.path("/cartao/{id}/carteira").buildAndExpand(carteiraDigital.getCarteiraId()).toUri();
+                        return ResponseEntity.created(uri).body(new CarteiraDigitalResponse(carteiraDigital));
                     }
                 }catch (Exception e){
                     return ResponseEntity.unprocessableEntity().body(new CartaoApiResponseGenerico("FALHA AO PROCESSAR"));
