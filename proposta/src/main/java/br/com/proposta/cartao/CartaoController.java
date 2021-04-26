@@ -121,8 +121,7 @@ public class CartaoController {
             if(procurarCartao(cartaoId)){
                 try {
                     CartaoApiResponseGenerico cartaoApiResponseGenerico = apiCartao.associarCarteira(cartaoId, new CarteiraDigitalAPIRequest(carteiraDigitalRequest));
-                    System.out.println(cartaoApiResponseGenerico.getAssociado());
-                    System.out.println(cartaoApiResponseGenerico.getId());
+
                     if(cartaoApiResponseGenerico.getAssociado()){
                         CarteiraDigital carteiraDigital = carteiraDigitalRequest.toModel(cartaoApiResponseGenerico.getId());
 
