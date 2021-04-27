@@ -55,7 +55,6 @@
 			<artifactId>micrometer-registry-prometheus</artifactId>
 			<version>1.6.5</version>
 		</dependency>
-
 		<!--	oath2-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -79,7 +78,14 @@
 			<artifactId>keycloak-spring-security-adapter</artifactId>
 			<version>12.0.4</version>
 		</dependency>
-<!--			oath2-->
+		<!--oath2-->
+		<!-- Opentracing -->
+		<dependency>
+			<groupId>io.opentracing.contrib</groupId>
+			<artifactId>opentracing-spring-jaeger-starter</artifactId>
+			<version>3.2.2</version>
+		</dependency>
+		<!-- Opentracing -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
