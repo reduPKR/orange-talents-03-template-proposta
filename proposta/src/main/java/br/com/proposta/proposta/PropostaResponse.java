@@ -17,12 +17,12 @@ public class PropostaResponse {
     private String cartao;
 
 
-    public PropostaResponse(Proposta proposta) {
+    public PropostaResponse(Proposta proposta, String documento) {
         this.status = proposta.getAvaliacaoFinanceiraStatus();
         this.nome = proposta.getNome();
         this.email = proposta.getEmail();
         this.salario = proposta.getSalario();
-        this.documento = proposta.getDocumento();
+        this.documento = documento;
         this.cartao = proposta.getCartaoId();
         this.endereco = new EnderecoResponse(proposta.getEndereco());
     }

@@ -1,5 +1,6 @@
 package br.com.proposta.proposta;
 
+import br.com.proposta.compartilhado.Criptografia;
 import br.com.proposta.endereco.EnderecoRequest;
 import br.com.proposta.proposta.documento.CnpjGroup;
 import br.com.proposta.proposta.documento.CpfGroup;
@@ -65,7 +66,7 @@ public class PropostaRequest {
                 this.nome,
                 this.email,
                 this.salario,
-                this.documento,
+                Criptografia.encriptar(this.documento),
                 this.endereco.toModel()
         );
     }

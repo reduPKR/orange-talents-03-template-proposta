@@ -2,6 +2,7 @@ package br.com.proposta.biometria;
 
 import br.com.proposta.cartao.CartaoResponse;
 import br.com.proposta.cartao.ApiCartao;
+import br.com.proposta.compartilhado.Criptografia;
 import br.com.proposta.errors.ErrorResponse;
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class BiometriaController {
     @GetMapping("/base64")
     public String converteParaTeste(){
         String mensagem = "Teste de gerar base64 para mandar no post";
-        return Base64.getEncoder().encodeToString(mensagem.getBytes());
+        return Criptografia.encriptar(mensagem);
     }
 
     @PostMapping("/{cartaoId}")

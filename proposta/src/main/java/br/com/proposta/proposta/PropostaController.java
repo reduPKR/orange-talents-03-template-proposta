@@ -1,5 +1,6 @@
 package br.com.proposta.proposta;
 
+import br.com.proposta.compartilhado.Criptografia;
 import br.com.proposta.errors.ErrorResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -45,7 +46,11 @@ public class PropostaController {
            proposta.atualizarAvaliacaoFinanceira(status);
 
            URI uri = uriComponentsBuilder.path("/proposta/{id}").buildAndExpand(proposta.getId()).toUri();
-           return ResponseEntity.created(uri).body(new PropostaResponse(proposta));
+           return ResponseEntity.created(uri).body(
+                   new PropostaResponse(
+                           proposta,
+                           Criptografia.desencriptar(proposta.getDocumento())
+                   ));
        }
 
        List<ErrorResponse> errors = result.getFieldErrors()
@@ -57,11 +62,17 @@ public class PropostaController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> detalhar(@PathVariable long id){
-        Optional<Proposta> proposta = propostaRepository.findById(id);
+        Optional<Proposta> optional = propostaRepository.findById(id);
 
-        if(proposta.isPresent())
-            return ResponseEntity.ok(new PropostaResponse(proposta.get()));
+        if(optional.isPresent()) {
+            Proposta proposta = optional.get();
 
+            return ResponseEntity.ok(
+                    new PropostaResponse(
+                            proposta,
+                            Criptografia.desencriptar(proposta.getDocumento())
+                    ));
+        }
         return ResponseEntity.notFound().build();
     }
 
@@ -69,5 +80,4 @@ public class PropostaController {
     public String testeDocker(){
         return "Docker respondendo";
     }
-
 }
